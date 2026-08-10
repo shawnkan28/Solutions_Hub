@@ -3,6 +3,7 @@
 
 	const apps = [
 		{
+			id: 1,
 			sn: '01',
 			title: 'Transaction Management',
 			desc: 'Management of transactions and analysis through dashboards.',
@@ -10,37 +11,42 @@
 			styleVar: '--color-light: #ffe4ea; --color-dark: #e85a7a'
 		},
 		{
+			id: 2,
 			sn: '02',
-			title: 'Inventory',
-			desc: 'Stock levels, SKUs, and warehouse flow.',
-			href: '',
+			title: 'Hololive OCG',
+			desc: 'Hololive OCG Card Browser',
+			href: 'file:///D:/Personal/Projects/holo_OCG/hocg-card-filter.html',
 			styleVar: '--color-light: #fff0cc; --color-dark: #e0a020;'
 		},
 		{
-			sn: '03',
-			title: 'CRM',
-			desc: 'Contacts, pipelinem and follow-ups',
+			id: 3,
+			sn: 'TBD',
+			title: '',
+			desc: '',
 			href: '',
 			styleVar: '--color-light: #d9f2e8; --color-dark: #2f9e75;'
 		},
 		{
-			sn: '04',
-			title: 'Reports',
-			desc: 'Scheduled exports and printable summaries.',
+			id: 4,
+			sn: 'TBD',
+			title: '',
+			desc: '',
 			href: '',
 			styleVar: '--color-light: #dde8f8; --color-dark: #4a7fd4;'
 		},
 		{
-			sn: '05',
-			title: 'Automation',
-			desc: 'Workflows, triggers, and batch jobs',
+			id: 5,
+			sn: 'TBD',
+			title: '',
+			desc: '',
 			href: '',
 			styleVar: '--color-light: #ebe0f7; --color-dark: #9b6bc9;'
 		},
 		{
-			sn: '06',
-			title: 'Admin',
-			desc: 'Users, permission, and system settings',
+			id: 6,
+			sn: 'TBD',
+			title: '',
+			desc: '',
 			href: '',
 			styleVar: '--color-light: #ffe0d6; --color-dark: #e85a3c;'
 		}
@@ -56,7 +62,7 @@
 		<div class="desc">Open any tool from one place.</div>
 	</div>
 	<div class="content">
-		{#each apps as app (app.title)}
+		{#each apps as app (app.id)}
 			<div>
 				{@render item(app)}
 			</div>
@@ -73,16 +79,16 @@
 </div>
 
 {#snippet item(obj: { sn: string; title: string; desc: string; href: string; styleVar: string })}
-	<div >
-	<ClickableDiv class="item-container"
+	<div>
+	<ClickableDiv class={obj.sn !== "TBD" ? "item-container" : "item-container tbd"}
 		style={obj.styleVar}
 		onclick={() => {
 			window.location.href = obj.href;
 		}}
 	>
-		<div><span class="item-sn">{obj.sn}</span></div>
-		<div class="item-title">{obj.title}</div>
-		<div class="item-desc">{obj.desc}</div>
+		<div><span class="item-sn">{obj.sn !== "TBD" ? obj.sn : "-"}</span></div>
+		<div class="item-title">{obj.sn !== "TBD" ? obj.title : "TBD"}</div>
+		<div class="item-desc">{obj.sn !== "TBD" ? obj.desc : "To Be Done"}</div>
 		<div class="item-action">
 			<div class="item-ico"><span class="mdi-light--arrow-right"></span></div>
 		</div>
