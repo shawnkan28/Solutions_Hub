@@ -15,7 +15,7 @@
 			sn: '02',
 			title: 'Hololive OCG',
 			desc: 'Hololive OCG Card Browser',
-			href: 'http://localhost:80801',
+			href: 'http://localhost:8081',
 			styleVar: '--color-light: #fff0cc; --color-dark: #e0a020;'
 		},
 		{
