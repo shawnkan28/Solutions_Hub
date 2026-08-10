@@ -15,7 +15,7 @@
 			sn: '02',
 			title: 'Hololive OCG',
 			desc: 'Hololive OCG Card Browser',
-			href: 'file:///D:/Personal/Projects/holo_OCG/hocg-card-filter.html',
+			href: 'http://localhost:80801',
 			styleVar: '--color-light: #fff0cc; --color-dark: #e0a020;'
 		},
 		{
