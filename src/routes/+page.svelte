@@ -1,5 +1,8 @@
 <script lang="ts">
 	import ClickableDiv from '$lib/components/ClickableDiv.svelte';
+	import { env } from '$env/dynamic/public';
+
+	const siteURL = env.PUBLIC_SITE_URL ?? "localhost";
 
 	const apps = [
 		{
@@ -7,7 +10,7 @@
 			sn: '01',
 			title: 'Transaction Management',
 			desc: 'Management of transactions and analysis through dashboards.',
-			href: 'http://localhost:8080',
+			href: `http://${siteURL}:8080`,
 			styleVar: '--color-light: #ffe4ea; --color-dark: #e85a7a'
 		},
 		{
@@ -15,7 +18,7 @@
 			sn: '02',
 			title: 'Hololive OCG',
 			desc: 'Hololive OCG Card Browser',
-			href: 'http://localhost:8081',
+			href: `http://${siteURL}:8081`,
 			styleVar: '--color-light: #fff0cc; --color-dark: #e0a020;'
 		},
 		{
@@ -80,19 +83,20 @@
 
 {#snippet item(obj: { sn: string; title: string; desc: string; href: string; styleVar: string })}
 	<div>
-	<ClickableDiv class={obj.sn !== "TBD" ? "item-container" : "item-container tbd"}
-		style={obj.styleVar}
-		onclick={() => {
-			window.location.href = obj.href;
-		}}
-	>
-		<div><span class="item-sn">{obj.sn !== "TBD" ? obj.sn : "-"}</span></div>
-		<div class="item-title">{obj.sn !== "TBD" ? obj.title : "TBD"}</div>
-		<div class="item-desc">{obj.sn !== "TBD" ? obj.desc : "To Be Done"}</div>
-		<div class="item-action">
-			<div class="item-ico"><span class="mdi-light--arrow-right"></span></div>
-		</div>
-	</ClickableDiv>
+		<ClickableDiv
+			class={obj.sn !== 'TBD' ? 'item-container' : 'item-container tbd'}
+			style={obj.styleVar}
+			onclick={() => {
+				window.location.href = obj.href;
+			}}
+		>
+			<div><span class="item-sn">{obj.sn !== 'TBD' ? obj.sn : '-'}</span></div>
+			<div class="item-title">{obj.sn !== 'TBD' ? obj.title : 'TBD'}</div>
+			<div class="item-desc">{obj.sn !== 'TBD' ? obj.desc : 'To Be Done'}</div>
+			<div class="item-action">
+				<div class="item-ico"><span class="mdi-light--arrow-right"></span></div>
+			</div>
+		</ClickableDiv>
 	</div>
 {/snippet}
 
@@ -138,7 +142,6 @@
 		gap: 1rem;
 	}
 
-	
 	/*  ##########################################################################
         The footer where the additional details are in
         ########################################################################## */
