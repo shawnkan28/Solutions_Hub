@@ -1,158 +1,83 @@
 <script lang="ts">
-	import ClickableDiv from '$lib/components/ClickableDiv.svelte';
+	import { useClock } from '$lib/components/clock.svelte';
+	import { apps } from '$lib/data/portal-meta';
+	import favicon from '$lib/assets/homebase-icon.svg';
 
-	const apps = [
-		{
-			id: 1,
-			sn: '01',
-			title: 'Transaction Management',
-			desc: 'Management of transactions and analysis through dashboards.',
-			href: 'http://localhost:8080',
-			styleVar: '--color-light: #ffe4ea; --color-dark: #e85a7a'
-		},
-		{
-			id: 2,
-			sn: '02',
-			title: 'Hololive OCG',
-			desc: 'Hololive OCG Card Browser',
-			href: 'http://localhost:8081',
-			styleVar: '--color-light: #fff0cc; --color-dark: #e0a020;'
-		},
-		{
-			id: 3,
-			sn: 'TBD',
-			title: '',
-			desc: '',
-			href: '',
-			styleVar: '--color-light: #d9f2e8; --color-dark: #2f9e75;'
-		},
-		{
-			id: 4,
-			sn: 'TBD',
-			title: '',
-			desc: '',
-			href: '',
-			styleVar: '--color-light: #dde8f8; --color-dark: #4a7fd4;'
-		},
-		{
-			id: 5,
-			sn: 'TBD',
-			title: '',
-			desc: '',
-			href: '',
-			styleVar: '--color-light: #ebe0f7; --color-dark: #9b6bc9;'
-		},
-		{
-			id: 6,
-			sn: 'TBD',
-			title: '',
-			desc: '',
-			href: '',
-			styleVar: '--color-light: #ffe0d6; --color-dark: #e85a3c;'
-		}
-	];
+	const now = useClock();
+	const fmt = new Intl.DateTimeFormat('en-US', {
+		weekday: 'short',
+		hour: '2-digit',
+		minute: '2-digit'
+	});
+	const timelabel = $derived(fmt.format(now));
+
 	const time = new Date();
+
+	// Apps run on the same host as the hub, so reuse its hostname and swap the port.
+	function appUrl(port: number) {
+		const { protocol, hostname } = window.location;
+		return `${protocol}//${hostname}:${port}`;
+	}
 </script>
 
 <div class="container">
-	<div class="title">
-		<div class="head">
-			Solutions <div class="sub-head">Hub</div>
-		</div>
-		<div class="desc">Open any tool from one place.</div>
-	</div>
-	<div class="content">
-		{#each apps as app (app.id)}
-			<div>
-				{@render item(app)}
-			</div>
-		{/each}
-	</div>
-	<div class="footer">
-		<div>
-			<span class="head">Hub</span> · six solutions, one entry point
-		</div>
-		<div class="time">
-			{time.toLocaleDateString('en-US', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}
+	<div class="nav">
+		<button class="home-btn">
+			<img src={favicon} alt="" /> <span>Homebase</span>
+		</button>
+		<div style="display: flex; gap: 10px; align-items: center;">
+			<div class="timer">{timelabel}</div>
+			<button class="toggle-icon" aria-label="Toggle color theme">
+				<svg
+					class="moon"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg
+				>
+			</button>
 		</div>
 	</div>
 </div>
 
-{#snippet item(obj: { sn: string; title: string; desc: string; href: string; styleVar: string })}
-	<div>
-	<ClickableDiv class={obj.sn !== "TBD" ? "item-container" : "item-container tbd"}
-		style={obj.styleVar}
-		onclick={() => {
-			window.location.href = obj.href;
-		}}
-	>
-		<div><span class="item-sn">{obj.sn !== "TBD" ? obj.sn : "-"}</span></div>
-		<div class="item-title">{obj.sn !== "TBD" ? obj.title : "TBD"}</div>
-		<div class="item-desc">{obj.sn !== "TBD" ? obj.desc : "To Be Done"}</div>
-		<div class="item-action">
-			<div class="item-ico"><span class="mdi-light--arrow-right"></span></div>
-		</div>
-	</ClickableDiv>
-	</div>
-{/snippet}
-
 <style>
 	.container {
-		flex: 1;
-		max-width: 1100px;
+		max-width: 1000px;
 		margin: 0 auto;
-		padding: clamp(2rem, 6vh, 4.5rem);
+	}
+	.nav {
+		padding: 10px 0;
 		display: flex;
-		flex-direction: column;
-		gap: clamp(2rem, 5vh, 3.5rem);
-	}
-	/*  ##########################################################################
-        The header section of the page. Where the title is in + the desc of the app 
-        ########################################################################## */
-	.title {
-		line-height: 0.95;
-		display: flex;
-		flex-direction: column;
-		gap: 1.1rem;
-	}
-	.title .head {
-		/* clamp works by (minimum, preferred, maximum) */
-		font-size: clamp(2rem, 6vw, 3.4rem);
-		font-weight: 600;
-	}
-	.title .sub-head {
-		font-weight: 700;
-		font-size: clamp(3.2rem, 10.5vw, 6rem);
-	}
-	.title .desc {
-		font-weight: 400;
-		font-size: clamp(0.95rem, 2vw, 1.05rem);
-		color: #6b6f7a;
-	}
-	/*  ##########################################################################
-        Layout of content navigation button
-        ########################################################################## */
-	.content {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		gap: 1rem;
-	}
-
-	
-	/*  ##########################################################################
-        The footer where the additional details are in
-        ########################################################################## */
-	.footer {
-		padding-top: 0.5rem;
-		border-top: 1px solid rgba(120, 100, 140, 0.14);
-		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		font-size: 0.8rem;
-		color: #6b6f7a;
+		justify-content: space-between;
 	}
-	.footer .head {
-		color: #2b2d33;
-		font-weight: 500;
+	.home-btn {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-weight: bold;
+		font-size: 1.1rem;
+		color: white;
+	}
+	.timer {
+		border: 1px solid var(--border-color);
+		color: var(--accent-color);
+		padding: 10px 15px;
+		font-size: .9rem;
+		border-radius: 30px;
+		line-height: 1;
+		background: var(--accent-bg);
+		font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+	}
+	.toggle-icon {
+		color: var(--accent-color);
+		width: 35px;
+		height: 35px;
+		border: 1px solid var(--border-color);
+		padding: 8px;
+		border-radius: 50%;
+		background: var(--accent-bg);
 	}
 </style>
