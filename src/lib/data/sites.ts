@@ -19,21 +19,21 @@ export const apps = [
         href: `http://${siteURL}:8081`,
         styleVar: '--color-border: rgba(224, 160, 32, 0.22); --color-base: #e0a020; --color-bg: #372d23; --color-hyper: #eecb84;'
     },
-    // {
-    //     id: 3,
-    //     sn: 'TBD',
-    //     title: '',
-    //     desc: '',
-    //     href: '',
-    //     styleVar: '--color-light: #d9f2e8; --color-dark: #2f9e75;'
-    // },
+    {
+        id: 3,
+        sn: '03',
+        title: 'Immich',
+        desc: 'Self-hosted photo and video backup and library.',
+        href: `http://${siteURL}:2283`,
+        styleVar: '--color-border: rgba(66, 80, 175, 0.22); --color-base: #4250af; --color-bg: #202237; --color-hyper: #979fd3;'
+    },
     // {
     //     id: 4,
     //     sn: 'TBD',
     //     title: '',
     //     desc: '',
     //     href: '',
-    //     styleVar: '--color-light: #dde8f8; --color-dark: #4a7fd4;'
+    //     styleVar: '--color-border: rgba(74, 127, 212, 0.22); --color-base: #4a7fd4; --color-bg: #21293d; --color-hyper: #9cb9e7;'
     // },
     // {
     //     id: 5,
@@ -41,7 +41,7 @@ export const apps = [
     //     title: '',
     //     desc: '',
     //     href: '',
-    //     styleVar: '--color-light: #ebe0f7; --color-dark: #9b6bc9;'
+    //     styleVar: '--color-border: rgba(155, 107, 201, 0.22); --color-base: #9b6bc9; --color-bg: #2d263b; --color-hyper: #c8aee1;'
     // },
     // {
     //     id: 6,
@@ -49,6 +49,6 @@ export const apps = [
     //     title: '',
     //     desc: '',
     //     href: '',
-    //     styleVar: '--color-light: #ffe0d6; --color-dark: #e85a3c;'
+    //     styleVar: '--color-border: rgba(232, 90, 60, 0.22); --color-base: #e85a3c; --color-bg: #392426; --color-hyper: #f2a494;'
     // }
 ];
