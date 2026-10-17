@@ -14,8 +14,6 @@
 	});
 	const timelabel = $derived(fmt.format(now));
 
-	const time = new Date();
-
 	// Apps run on the same host as the hub, so reuse its hostname and swap the port.
 	function appUrl(port: number) {
 		const { protocol, hostname } = window.location;
@@ -27,7 +25,7 @@
 
 <div>
 	<div class="nav-wrapper" class:scrolled={y > 4}>
-		<div class="container nav">
+		<div class="nav page">
 			<button class="home-btn">
 				<img src={favicon} alt="" /> <span>Homebase</span>
 			</button>
@@ -48,15 +46,32 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<Banner {timelabel} />
+	<div class="container page">
+		<!-- BANNER  -->
+		<Banner {timelabel} totalOnline={apps.length} />
+		
+		<!-- SEARCH BAR -->
+		<div class="section">
+			<span style="font-family: var(--font-family-codish);">
+				APPS <span style="letter-spacing: 0; color: var(--text-faint);"
+					>{String(apps.length).padStart(2, '0')}</span
+				>
+			</span>
+			<div class="line"></div>
+			<input type="text" placeholder="Find an app..." />
+		</div>
 	</div>
 </div>
 
 <style>
-	.container {
-		max-width: 1500px;
+	.page {
+		max-width: 1250px;
 		margin: 0 auto;
+	}
+	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
 	}
 	.nav-wrapper {
 		position: sticky;
@@ -90,7 +105,7 @@
 		border-radius: 30px;
 		line-height: 1;
 		background: var(--bg-accent);
-		font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+		font-family: var(--font-family-codish);
 	}
 	.toggle-icon {
 		color: white;
@@ -103,5 +118,20 @@
 	}
 	.toggle-icon:hover {
 		border-color: var(--border-accent);
+	}
+	.section {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		font-size: 0.9rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		color: var(--text-accent);
+	}
+	.line {
+		flex: 1;
+		min-width: 50px;
+		height: 0;
+		border-bottom: 1px solid var(--border-color);
 	}
 </style>

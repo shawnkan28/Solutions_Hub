@@ -1,10 +1,17 @@
 <script lang="ts">
 	let {
 		timelabel,
-		online=0,
-		offline=0,
-		slots=0
-	}: { timelabel: string; online: number; offline: number; slots: number } = $props();
+		online = 0,
+		totalOnline = 0,
+		offline = 0,
+		slots = 0
+	}: {
+		timelabel: string;
+		online?: number;
+		totalOnline?: number;
+		offline?: number;
+		slots?: number;
+	} = $props();
 </script>
 
 <div class="banner">
@@ -28,11 +35,11 @@
 {/snippet}
 
 {#snippet rightSide()}
-	<div style="">
-		<div style="display: flex; gap: 10px; margin-bottom: 20px;">
+	<div>
+		<div style="display: flex; gap: 20px; margin-bottom: 20px;">
 			<div class="card">
 				<div><span class="dot"></span>ONLINE</div>
-				<span class="accent">{online}</span><span>/2</span>
+				<span class="accent">{online}</span><span>/{totalOnline}</span>
 			</div>
 			<div class="card">
 				<div><span class="dot"></span>OFFLINE</div>
@@ -117,12 +124,12 @@
 	/* ############################################################################# */
 	.card {
 		border: 1px solid var(--border-color);
-		padding: 0.7rem;
-		border-radius: 10px;
+		padding: 1rem;
+		border-radius: 15px;
 		background: var(--bg-accent);
 		color: var(--text-accent);
 		letter-spacing: 0.1em;
-		width: 125px;
+		width: 150px;
 	}
 	.card div {
 		display: flex;

@@ -2,11 +2,13 @@
 	font-size: 16px;
 	--text: #f2f0f7;
 	--text-accent: #a5a1b3;
+	--text-faint: #6f6b7d;
 	--bg-accent: rgba(30, 28, 38, 0.7);
 	--border-color: rgba(255, 255, 255, 0.08);
 	--border-accent: rgba(255, 255, 255, 0.16);
 	--success: #1f9d6b;
 	--error: #d2475f;
+	--font-family-codish: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 }
 
 * {
