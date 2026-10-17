@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { useClock } from '$lib/components/clock.svelte';
 	import { apps } from '$lib/data/portal-meta';
+	import Banner from '$lib/components/Banner.svelte';
 	import favicon from '$lib/assets/homebase-icon.svg';
+
+	let y = $state(0); // used to check if scrolled
 
 	const now = useClock();
 	const fmt = new Intl.DateTimeFormat('en-US', {
@@ -20,44 +23,54 @@
 	}
 </script>
 
-<div class="container">
-	<div class="nav">
-		<button class="home-btn">
-			<img src={favicon} alt="" /> <span>Homebase</span>
-		</button>
-		<div style="display: flex; gap: 10px; align-items: center;">
-			<div class="timer">{timelabel}</div>
-			<button class="toggle-icon" aria-label="Toggle color theme">
-				<svg
-					class="moon"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg
-				>
+<svelte:window bind:scrollY={y} />
+
+<div>
+	<div class="nav-wrapper" class:scrolled={y > 4}>
+		<div class="container nav">
+			<button class="home-btn">
+				<img src={favicon} alt="" /> <span>Homebase</span>
 			</button>
+
+			<div style="display: flex; gap: 10px; align-items: center;">
+				<div class="timer">{timelabel}</div>
+				<button class="toggle-icon" aria-label="Toggle color theme">
+					<svg
+						class="moon"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg
+					>
+				</button>
+			</div>
 		</div>
+	</div>
+	<div class="container">
+		<Banner {timelabel} />
 	</div>
 </div>
 
 <style>
-	.wrapper {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: clamp(2rem, 5vh, 3.5rem);
-		display: flex;
-		flex-direction: column;
-		overflow-y: scroll;
-	}
 	.container {
-		max-width: 1000px;
+		max-width: 1500px;
 		margin: 0 auto;
 	}
+	.nav-wrapper {
+		position: sticky;
+		top: 0;
+		padding: 15px 0;
+		transition: all 0.4s ease;
+		border-bottom: 1px solid transparent;
+	}
+	.nav-wrapper.scrolled {
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(16px) saturate(1.4);
+		border-bottom-color: var(--border-accent);
+	}
 	.nav {
-		padding: 10px 0;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -68,25 +81,27 @@
 		gap: 10px;
 		font-weight: bold;
 		font-size: 1.1rem;
-		color: white;
 	}
 	.timer {
 		border: 1px solid var(--border-color);
-		color: var(--accent-color);
+		color: var(--text-accent);
 		padding: 10px 15px;
-		font-size: .9rem;
+		font-size: 0.9rem;
 		border-radius: 30px;
 		line-height: 1;
-		background: var(--accent-bg);
+		background: var(--bg-accent);
 		font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 	}
 	.toggle-icon {
-		color: var(--accent-color);
+		color: white;
 		width: 35px;
 		height: 35px;
 		border: 1px solid var(--border-color);
 		padding: 8px;
 		border-radius: 50%;
-		background: var(--accent-bg);
+		background: var(--bg-accent);
+	}
+	.toggle-icon:hover {
+		border-color: var(--border-accent);
 	}
 </style>
