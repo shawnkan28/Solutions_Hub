@@ -49,7 +49,7 @@
 	<div class="container page">
 		<!-- BANNER  -->
 		<Banner {timelabel} totalOnline={apps.length} />
-		
+
 		<!-- SEARCH BAR -->
 		<div class="section">
 			<span style="font-family: var(--font-family-codish);">
@@ -58,7 +58,17 @@
 				>
 			</span>
 			<div class="line"></div>
-			<input type="text" placeholder="Find an app..." />
+			<div class="search">
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg
+				>
+				<input type="text" placeholder="Find an app..." class="search-input" />
+			</div>
 		</div>
 	</div>
 </div>
@@ -133,5 +143,31 @@
 		min-width: 50px;
 		height: 0;
 		border-bottom: 1px solid var(--border-color);
+	}
+	.search {
+		position: relative;
+	}
+	.search svg{
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		color: var(--text-faint);
+		top: 50%;
+		left: 0.9rem;
+		transform: translateY(-50%);
+	}
+	.search-input {
+		border: none;
+		background: var(--bg-accent);
+		padding: 0.6rem 2.6rem 0.6rem 2.5rem;
+		font: inherit;
+		font-size: 0.9rem;
+		border-radius: 999px;
+		border: 1px solid var(--border-color);
+		color: var(--text);
+		transition: all .1s ease;
+	}
+	.search-input:focus {
+		border-color: var(--text-faint);
 	}
 </style>

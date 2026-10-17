@@ -44,3 +44,8 @@ button {
 	padding-inline: 0px;
 	font-family: inherit;
 }
+
+input:focus-visible {
+	outline: none;
+	border-color: initial;
+}
