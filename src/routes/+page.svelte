@@ -4,6 +4,7 @@
 	import Banner from '$lib/components/Banner.svelte';
 	import favicon from '$lib/assets/homebase-icon.svg';
 	import AppCard from '$lib/components/AppCard.svelte';
+	import EmptyCard from '$lib/components/EmptyCard.svelte';
 	import { onMount } from 'svelte';
 
 	let statuses = $state<Record<number, boolean>>({});
@@ -16,6 +17,8 @@
 		minute: '2-digit'
 	});
 	const timelabel = $derived(fmt.format(now));
+	const numOffline = $derived(Object.values(statuses).filter((up) => !up).length);
+	const numOnline = $derived(apps.length - numOffline);
 
 	async function refresh() {
 		const res = await fetch('/api/status');
@@ -34,13 +37,35 @@
 
 	<div class="container page">
 		<!-- BANNER  -->
-		<Banner {timelabel} totalOnline={apps.length} />
+		<Banner
+			{timelabel}
+			totalOnline={apps.length}
+			online={numOnline}
+			offline={numOffline}
+			slots={6}
+		/>
 
 		<!-- SEARCH BAR -->
 		{@render searchbar()}
 
 		<!-- APPS -->
-		<AppCard {statuses}/>
+		<AppCard {statuses} />
+
+		<!-- EMPTY SLOTS  -->
+		<div class="section">
+			<span style="font-family: var(--font-family-codish);">
+				OPEN SLOTS
+				<span style="letter-spacing: 0; color: var(--text-faint);"
+					>{String(6 - apps.length).padStart(2, '0')}</span
+				>
+			</span>
+			<div class="line"></div>
+		</div>
+		<EmptyCard numEmpty={6 - apps.length} />
+		
+		<!-- FOOTER -->
+		<div class="line"></div>
+		<div style="font-size: .8rem; color: var(--text); font-weight: bold;">Homebase <span style="font-weight: 400; color: var(--text-faint);"> - homelab dashboard</span></div>
 	</div>
 </div>
 
