@@ -43,6 +43,9 @@ button {
 	padding-block: 0px;
 	padding-inline: 0px;
 	font-family: inherit;
+	outline: none;
+	font: inherit;
+	text-align: inherit;
 }
 
 input:focus-visible {

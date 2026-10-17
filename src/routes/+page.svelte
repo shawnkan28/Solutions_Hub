@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { useClock } from '$lib/components/clock.svelte';
-	import { apps } from '$lib/data/portal-meta';
+	import { apps } from '$lib/data/sites';
 	import Banner from '$lib/components/Banner.svelte';
 	import favicon from '$lib/assets/homebase-icon.svg';
+	import AppCard from "$lib/components/AppCard.svelte";
 
 	let y = $state(0); // used to check if scrolled
 
@@ -51,27 +52,34 @@
 		<Banner {timelabel} totalOnline={apps.length} />
 
 		<!-- SEARCH BAR -->
-		<div class="section">
-			<span style="font-family: var(--font-family-codish);">
-				APPS <span style="letter-spacing: 0; color: var(--text-faint);"
-					>{String(apps.length).padStart(2, '0')}</span
-				>
-			</span>
-			<div class="line"></div>
-			<div class="search">
-				<svg
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg
-				>
-				<input type="text" placeholder="Find an app..." class="search-input" />
-			</div>
-		</div>
+		{@render searchbar()}
+
+		<!-- APPS -->
+		<AppCard />
 	</div>
 </div>
+
+{#snippet searchbar()}
+	<div class="section">
+		<span style="font-family: var(--font-family-codish);">
+			APPS <span style="letter-spacing: 0; color: var(--text-faint);"
+				>{String(apps.length).padStart(2, '0')}</span
+			>
+		</span>
+		<div class="line"></div>
+		<div class="search">
+			<svg
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg
+			>
+			<input type="text" placeholder="Find an app..." class="search-input" />
+		</div>
+	</div>
+{/snippet}
 
 <style>
 	.page {
@@ -89,6 +97,7 @@
 		padding: 15px 0;
 		transition: all 0.4s ease;
 		border-bottom: 1px solid transparent;
+		z-index: 99;
 	}
 	.nav-wrapper.scrolled {
 		background: rgba(0, 0, 0, 0.3);
@@ -147,7 +156,7 @@
 	.search {
 		position: relative;
 	}
-	.search svg{
+	.search svg {
 		position: absolute;
 		width: 16px;
 		height: 16px;
@@ -165,7 +174,7 @@
 		border-radius: 999px;
 		border: 1px solid var(--border-color);
 		color: var(--text);
-		transition: all .1s ease;
+		transition: all 0.1s ease;
 	}
 	.search-input:focus {
 		border-color: var(--text-faint);
