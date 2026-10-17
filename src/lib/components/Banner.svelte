@@ -38,11 +38,13 @@
 	<div>
 		<div style="display: flex; gap: 20px; margin-bottom: 20px;">
 			<div class="card">
-				<div><span class="dot"></span>ONLINE</div>
-				<span class="accent">{online}</span><span>/{totalOnline}</span>
+				<div><span class="dot green"></span>ONLINE</div>
+				<span class="accent">{online}</span><span style="color: var(--text-faint);"
+					>/{totalOnline}</span
+				>
 			</div>
 			<div class="card">
-				<div><span class="dot"></span>OFFLINE</div>
+				<div><span class="dot red"></span>OFFLINE</div>
 				<span class="accent">{offline}</span>
 			</div>
 			<div class="card">
@@ -140,13 +142,6 @@
 		line-height: 1;
 		font-weight: 600;
 		margin-bottom: 5px;
-	}
-	.dot {
-		display: flex;
-		width: 5px;
-		height: 5px;
-		background: var(--success);
-		border-radius: 50%;
 	}
 	.card .accent {
 		font-size: 1.8rem;

@@ -3,8 +3,10 @@
 	import { apps } from '$lib/data/sites';
 	import Banner from '$lib/components/Banner.svelte';
 	import favicon from '$lib/assets/homebase-icon.svg';
-	import AppCard from "$lib/components/AppCard.svelte";
+	import AppCard from '$lib/components/AppCard.svelte';
+	import { onMount } from 'svelte';
 
+	let statuses = $state<Record<number, boolean>>({});
 	let y = $state(0); // used to check if scrolled
 
 	const now = useClock();
@@ -15,16 +17,34 @@
 	});
 	const timelabel = $derived(fmt.format(now));
 
-	// Apps run on the same host as the hub, so reuse its hostname and swap the port.
-	function appUrl(port: number) {
-		const { protocol, hostname } = window.location;
-		return `${protocol}//${hostname}:${port}`;
+	async function refresh() {
+		const res = await fetch('/api/status');
+		for (const r of await res.json()) statuses[r.id] = r.up;
 	}
+
+	onMount(refresh);
 </script>
 
-<svelte:window bind:scrollY={y} />
+<div
+	style="display: flex; flex-direction: column; min-height: 0; overflow-y: scroll; padding-bottom: 50px;"
+	onscroll={(e) => (y = e.currentTarget.scrollTop)}
+>
+	<!-- NAV BAR -->
+	{@render navbar()}
 
-<div>
+	<div class="container page">
+		<!-- BANNER  -->
+		<Banner {timelabel} totalOnline={apps.length} />
+
+		<!-- SEARCH BAR -->
+		{@render searchbar()}
+
+		<!-- APPS -->
+		<AppCard {statuses}/>
+	</div>
+</div>
+
+{#snippet navbar()}
 	<div class="nav-wrapper" class:scrolled={y > 4}>
 		<div class="nav page">
 			<button class="home-btn">
@@ -47,17 +67,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container page">
-		<!-- BANNER  -->
-		<Banner {timelabel} totalOnline={apps.length} />
-
-		<!-- SEARCH BAR -->
-		{@render searchbar()}
-
-		<!-- APPS -->
-		<AppCard />
-	</div>
-</div>
+{/snippet}
 
 {#snippet searchbar()}
 	<div class="section">
