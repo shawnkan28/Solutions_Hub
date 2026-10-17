@@ -43,6 +43,15 @@
 </div>
 
 <style>
+	.wrapper {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(2rem, 5vh, 3.5rem);
+		display: flex;
+		flex-direction: column;
+		overflow-y: scroll;
+	}
 	.container {
 		max-width: 1000px;
 		margin: 0 auto;
