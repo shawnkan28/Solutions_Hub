@@ -191,7 +191,6 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		color: var(--text-accent);
-		
 	}
 	.line {
 		flex: 1;

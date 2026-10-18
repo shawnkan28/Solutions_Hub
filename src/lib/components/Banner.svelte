@@ -83,6 +83,7 @@
 		align-items: center;
 		background: rgba(30, 28, 38, 0.4);
 		overflow: hidden;
+		flex-wrap: wrap;
 	}
 	/* This adds the gradient look */
 	.banner::before {
