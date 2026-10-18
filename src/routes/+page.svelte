@@ -29,7 +29,7 @@
 </script>
 
 <div
-	style="display: flex; flex-direction: column; min-height: 0; overflow-y: scroll; height: 100vh;"
+	style="display: flex; flex-direction: column; min-height: 0; overflow-y: scroll; overflow-x: hidden; height: 100vh;"
 	onscroll={(e) => (y = e.currentTarget.scrollTop)}
 >
 	<!-- NAV BAR -->
@@ -62,12 +62,14 @@
 			<div class="line"></div>
 		</div>
 		<EmptyCard numEmpty={6 - apps.length} />
-		
+
 		<div style="flex: 1;"></div>
-		
+
 		<!-- FOOTER -->
 		<div class="line"></div>
-		<div style="font-size: .8rem; color: var(--text); font-weight: bold;">Homebase <span style="font-weight: 400; color: var(--text-faint);"> - homelab dashboard</span></div>
+		<div style="font-size: .8rem; color: var(--text); font-weight: bold;">
+			Homebase <span style="font-weight: 400; color: var(--text-faint);"> - homelab dashboard</span>
+		</div>
 	</div>
 </div>
 
@@ -120,8 +122,11 @@
 
 <style>
 	.page {
+		width: 100%;
 		max-width: 1250px;
 		margin: 0 auto;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 	.container {
 		display: flex;
@@ -129,8 +134,6 @@
 		gap: 20px;
 		flex: 1;
 		padding-bottom: 20px;
-		padding-left: 20px;
-		padding-right: 20px;
 	}
 	.nav-wrapper {
 		position: sticky;
