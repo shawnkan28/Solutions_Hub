@@ -68,6 +68,7 @@
 		position: relative;
 		flex-direction: column;
 		transition: all ease 0.2s;
+		min-width: 300px;
 	}
 	.card:hover {
 		transform: translateY(-5px);

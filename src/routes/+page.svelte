@@ -184,12 +184,14 @@
 	}
 	.section {
 		display: flex;
-		gap: 20px;
+		flex-wrap: wrap;
+		gap: 12px 20px;
 		align-items: center;
 		font-size: 0.9rem;
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		color: var(--text-accent);
+		
 	}
 	.line {
 		flex: 1;
@@ -199,6 +201,12 @@
 	}
 	.search {
 		position: relative;
+		flex: 1 1 260px;
+	}
+	@media (min-width: 470px){
+		.search {
+			max-width: 300px;
+		}
 	}
 	.search svg {
 		position: absolute;
@@ -210,6 +218,7 @@
 		transform: translateY(-50%);
 	}
 	.search-input {
+		width: 100%;
 		border: none;
 		background: var(--bg-accent);
 		padding: 0.6rem 2.6rem 0.6rem 2.5rem;
