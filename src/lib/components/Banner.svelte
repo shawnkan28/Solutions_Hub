@@ -20,7 +20,7 @@
 </div>
 
 {#snippet leftSide(timelabel: string)}
-	<div style="display: flex; flex-direction: column;">
+	<div style="display: flex; flex-direction: column; padding-right: 150px;">
 		<span style="font-size: 0.9rem; color: var(--text-accent);">
 			{timelabel.includes('AM') ? 'Good Morning' : 'Good Evening'}
 		</span>
@@ -35,8 +35,8 @@
 {/snippet}
 
 {#snippet rightSide()}
-	<div>
-		<div style="display: flex; gap: 20px; margin-bottom: 20px;">
+	<div class="right-side">
+		<div class="card-container">
 			<div class="card">
 				<div><span class="dot green"></span>ONLINE</div>
 				<span class="accent">{online}</span><span style="color: var(--text-faint);"
@@ -84,6 +84,7 @@
 		background: rgba(30, 28, 38, 0.4);
 		overflow: hidden;
 		flex-wrap: wrap;
+		gap: 20px;
 	}
 	/* This adds the gradient look */
 	.banner::before {
@@ -125,6 +126,16 @@
 	/* ############################################################################# */
 	/* STATUS CARD */
 	/* ############################################################################# */
+	.right-side {
+		flex: 1 1 500px;
+	}
+	.card-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(max(150px, (100% - 2 * 20px) / 3), 1fr));
+		gap: 20px;
+		margin-bottom: 20px;
+		width: 100%;
+	}
 	.card {
 		border: 1px solid var(--border-color);
 		padding: 1rem;
@@ -132,7 +143,6 @@
 		background: var(--bg-accent);
 		color: var(--text-accent);
 		letter-spacing: 0.1em;
-		width: 150px;
 	}
 	.card div {
 		display: flex;
