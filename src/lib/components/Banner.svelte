@@ -20,12 +20,12 @@
 </div>
 
 {#snippet leftSide(timelabel: string)}
-	<div style="display: flex; flex-direction: column; padding-right: 150px;">
+	<div class="left-side">
 		<span style="font-size: 0.9rem; color: var(--text-accent);">
 			{timelabel.includes('AM') ? 'Good Morning' : 'Good Evening'}
 		</span>
 		<div style="display: flex;">
-			<h1 style="margin: 0; font-size: 5.5rem; line-height: 1; letter-spacing: -0.035em;">
+			<h1 class="title">
 				Homebase
 			</h1>
 			<div class="big-dot"></div>
@@ -122,6 +122,17 @@
 		height: 15px;
 		align-self: flex-end;
 		border-radius: 50%;
+	}
+	.left-side {
+		display: flex; 
+		flex-direction: column; 
+		min-width: 530px;
+	}
+	.title {
+		margin: 0; 
+		font-size: clamp(2.5rem, 8vw, 5.5rem); 
+		line-height: 1; 
+		letter-spacing: -0.035em;
 	}
 	/* ############################################################################# */
 	/* STATUS CARD */
