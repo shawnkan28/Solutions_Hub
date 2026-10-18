@@ -28,7 +28,7 @@
 <style>
 	.wrapper {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
 		gap: 30px;
 	}
 	.empty-card {
@@ -65,4 +65,9 @@
         font-weight: bold;
         font-size: 1.2rem;
     }
+	@media (max-width: 590px) {
+		.desc {
+			display: none;
+		}
+	}
 </style>
