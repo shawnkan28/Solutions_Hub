@@ -29,7 +29,7 @@
 </script>
 
 <div
-	style="display: flex; flex-direction: column; min-height: 0; overflow-y: scroll; padding-bottom: 50px;"
+	style="display: flex; flex-direction: column; min-height: 0; overflow-y: scroll; height: 100vh;"
 	onscroll={(e) => (y = e.currentTarget.scrollTop)}
 >
 	<!-- NAV BAR -->
@@ -62,6 +62,8 @@
 			<div class="line"></div>
 		</div>
 		<EmptyCard numEmpty={6 - apps.length} />
+		
+		<div style="flex: 1;"></div>
 		
 		<!-- FOOTER -->
 		<div class="line"></div>
@@ -125,6 +127,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
+		flex: 1;
+		padding-bottom: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 	.nav-wrapper {
 		position: sticky;
