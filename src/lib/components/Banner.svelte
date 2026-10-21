@@ -22,7 +22,15 @@
 		uptime: number;
 		perc: { mem: number; temp: number; disk: number };
 	};
-	let stats = $state<Stats | null>(null);
+	let stats = $state<Stats>({
+		hostname: '',
+		cpu: 0,
+		mem: { total: 0, used: 0 },
+		temp: 0,
+		disk: { total: 0, free: 0, used: 0 },
+		uptime: 0,
+		perc: { mem: 0, temp: 0, disk: 0 }
+	});
 
 	$effect(() => {
 		const load = async () => {
@@ -48,51 +56,76 @@
 	<div style="display: flex; flex-direction: column; width: 100%; gap: 15px;">
 		<div class="line"></div>
 		<div class="stats">
-			{#if stats}
-				<div style="display: flex; align-items: center; gap: 10px;">
-					<span class="dot green" style="margin-bottom: 1px;"></span>
-					<div class="value">{stats.hostname}</div>
-				</div>
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<span class="dot green" style="margin-bottom: 1px;"></span>
+				<div class="value">{stats.hostname}</div>
+			</div>
+			<div>
 				<div>
-					<div>
-						<label for="">CPU</label>
-						<div class="value">{stats?.cpu.toFixed(0)}%</div>
-					</div>
-					<div class="pbar">
-						<span class={stats.cpu > 90 ? "progress high" : stats.cpu > 70 ? " progress med" : "progress low"} style:width="{stats?.cpu.toFixed(0)}%"></span>
-					</div>
+					<label for="">CPU</label>
+					<div class="value">{stats?.cpu.toFixed(0)}%</div>
 				</div>
+				<div class="pbar">
+					<span
+						class={stats.cpu > 90
+							? 'progress high'
+							: stats.cpu > 70
+								? ' progress med'
+								: 'progress low'}
+						style:width="{stats?.cpu.toFixed(0)}%"
+					></span>
+				</div>
+			</div>
+			<div>
 				<div>
-					<div>
-						<label for="">RAM</label>
-						<div class="value">
-							{gb(stats?.mem.used)} <span class="sub">/ {gb(stats?.mem.total)} GB</span>
-						</div>
-					</div>
-					<div class="pbar">
-						<span class={stats.perc.mem > 80 ? "progress high" : stats.perc.mem > 60 ? "progress med" : "progress low"} style:width="{stats.perc.mem}%"
-						></span>
+					<label for="">RAM</label>
+					<div class="value">
+						{gb(stats?.mem.used)} <span class="sub">/ {gb(stats?.mem.total)} GB</span>
 					</div>
 				</div>
+				<div class="pbar">
+					<span
+						class={stats.perc.mem > 80
+							? 'progress high'
+							: stats.perc.mem > 60
+								? 'progress med'
+								: 'progress low'}
+						style:width="{stats.perc.mem}%"
+					></span>
+				</div>
+			</div>
+			<div>
 				<div>
-					<div>
-						<label for="">TEMP</label>
-						<div class="value">{stats.temp?.toFixed(1) ?? '-'}°C</div>
-					</div>
-					<div class="pbar">
-						<span class={stats.perc.temp > 80 ? "progress high" : stats.perc.temp > 60 ? "progress med" : "progress low" } style:width="{stats.perc.temp}%"></span>
-					</div>
+					<label for="">TEMP</label>
+					<div class="value">{stats.temp?.toFixed(1) ?? '-'}°C</div>
 				</div>
+				<div class="pbar">
+					<span
+						class={stats.perc.temp > 80
+							? 'progress high'
+							: stats.perc.temp > 60
+								? 'progress med'
+								: 'progress low'}
+						style:width="{stats.perc.temp}%"
+					></span>
+				</div>
+			</div>
+			<div>
 				<div>
-					<div>
-						<label for="">DISK</label>
-						<div class="value">{gb(stats.disk.free)} <span class="sub">GB free</span></div>
-					</div>
-					<div class="pbar">
-						<span class={stats.perc.disk > 50 ? "progress low" : stats.perc.disk > 25 ? "progress med" : "progress high"} style:width="{stats.perc.disk}%"></span>
-					</div>
+					<label for="">DISK</label>
+					<div class="value">{gb(stats.disk.free)} <span class="sub">GB free</span></div>
 				</div>
-			{/if}
+				<div class="pbar">
+					<span
+						class={stats.perc.disk > 50
+							? 'progress low'
+							: stats.perc.disk > 25
+								? 'progress med'
+								: 'progress high'}
+						style:width="{stats.perc.disk}%"
+					></span>
+				</div>
+			</div>
 		</div>
 	</div>
 {/snippet}
@@ -310,7 +343,7 @@
 		height: 100%;
 		background: var(--border-accent);
 		border-radius: 999px;
-		transition: width .3s ease-in-out;
+		transition: width 0.3s ease-in-out;
 	}
 	.progress.high {
 		background-color: var(--error);
