@@ -7,26 +7,6 @@
 	import EmptyCard from '$lib/components/EmptyCard.svelte';
 	import { onMount } from 'svelte';
 
-	type Stats = {
-		cpu: number;
-		mem: { total: number; used: number };
-		temp: number | null;
-		disk: { total: number; free: number; used: number };
-		uptime: number;
-	};
-	let stats = $state<Stats | null>(null);
-
-	$effect(() => {
-		const load = async () => {
-			const res = await fetch('/api/stats');
-			if (res.ok) stats = await res.json();
-		};
-		load();
-		const id = setInterval(load, 5000);
-		return () => clearInterval(id);
-	});
-	const gb = (bytes: number) => (bytes / 1024 ** 3).toFixed(1) + ' GB';
-
 	let statuses = $state<Record<number, boolean>>({});
 	let y = $state(0); // used to check if scrolled
 
@@ -70,17 +50,6 @@
 
 		<!-- APPS -->
 		<AppCard {statuses} />
-
-		<!-- STATS -->
-
-		<div class="stats">
-			{#if stats}
-				<div>CPU {stats?.cpu.toFixed(0)}%</div>
-				<div>RAM {gb(stats?.mem.used)} / {gb(stats?.mem.total)}</div>
-				<div>Temp {stats.temp?.toFixed(1) ?? '-'}°C</div>
-				<div>Disk {gb(stats.disk.free)} free</div>
-			{/if}
-		</div>
 
 		<!-- EMPTY SLOTS  -->
 		<div class="section">
@@ -222,12 +191,6 @@
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		color: var(--text-accent);
-	}
-	.line {
-		flex: 1;
-		min-width: 50px;
-		height: 0;
-		border-bottom: 1px solid var(--border-color);
 	}
 	.search {
 		position: relative;

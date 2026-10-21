@@ -12,12 +12,70 @@
 		offline?: number;
 		slots?: number;
 	} = $props();
+
+	type Stats = {
+		hostname: string;
+		cpu: number;
+		mem: { total: number; used: number };
+		temp: number | null;
+		disk: { total: number; free: number; used: number };
+		uptime: number;
+	};
+	let stats = $state<Stats | null>(null);
+
+	$effect(() => {
+		const load = async () => {
+			const res = await fetch('/api/stats');
+			if (res.ok) stats = await res.json();
+		};
+		load();
+		const id = setInterval(load, 5000);
+		return () => clearInterval(id);
+	});
+	const gb = (bytes: number) => (bytes / 1024 ** 3).toFixed(1);
 </script>
 
 <div class="banner">
 	{@render leftSide(timelabel)}
 	{@render rightSide()}
+	{@render underSide()}
 </div>
+
+{#snippet underSide()}
+	<div style="display: flex; flex-direction: column; width: 100%; gap: 15px;">
+		<div class="line"></div>
+		<div class="stats">
+			{#if stats}
+				<div style="align-items: center;">
+					<div class="dot green"></div>
+					<div class="value">{stats.hostname}</div>
+				</div>
+				<div>
+					<label for="">CPU</label>
+					<div class="value">{stats?.cpu.toFixed(0)}%</div>
+					<div class="pbar"></div>
+				</div>
+				<div>
+					<label for="">RAM</label>
+					<div class="value">
+						{gb(stats?.mem.used)} <span class="sub">/ {gb(stats?.mem.total)} GB</span>
+					</div>
+					<div class="pbar"></div>
+				</div>
+				<div>
+					<label for="">TEMP</label>
+					<div class="value">{stats.temp?.toFixed(1) ?? '-'}°C</div>
+					<div class="pbar"></div>
+				</div>
+				<div>
+					<label for="">DISK</label>
+					<div class="value">{gb(stats.disk.free)} <span class="sub">GB free</span></div>
+					<div class="pbar"></div>
+				</div>
+			{/if}
+		</div>
+	</div>
+{/snippet}
 
 {#snippet leftSide(timelabel: string)}
 	<div class="left-side">
@@ -25,9 +83,7 @@
 			{timelabel.includes('AM') ? 'Good Morning' : 'Good Evening'}
 		</span>
 		<div style="display: flex;">
-			<h1 class="title">
-				Homebase
-			</h1>
+			<h1 class="title">Homebase</h1>
 			<div class="big-dot"></div>
 		</div>
 		<span style="color: var(--text-accent); margin-top: 20px;">Homelab dashboard.</span>
@@ -124,14 +180,14 @@
 		border-radius: 50%;
 	}
 	.left-side {
-		display: flex; 
-		flex-direction: column; 
+		display: flex;
+		flex-direction: column;
 		min-width: 530px;
 	}
 	.title {
-		margin: 0; 
-		font-size: clamp(2.5rem, 8vw, 5.5rem); 
-		line-height: 1; 
+		margin: 0;
+		font-size: clamp(2.5rem, 8vw, 5.5rem);
+		line-height: 1;
 		letter-spacing: -0.035em;
 	}
 	/* ############################################################################# */
@@ -191,5 +247,34 @@
 	button:hover {
 		color: white;
 		border-color: var(--border-accent);
+	}
+	/* ############################################################################# */
+	/* STATS FOR MACHINE */
+	/* ############################################################################# */
+	.stats {
+		align-items: center;
+		display: flex;
+		gap: 20px;
+	}
+	.stats > div {
+		flex: 1;
+		display: flex;
+		gap: 5px;
+		align-items: flex-end;
+	}
+	.stats label {
+		color: var(--text-accent);
+		font-size: 0.7rem;
+		font-weight: 600;
+		flex: 1;
+	}
+	.stats .value {
+		font-family: var(--font-family-codish);
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+	.stats .sub {
+		margin-left: 2px;
+		color: var(--text-faint);
 	}
 </style>

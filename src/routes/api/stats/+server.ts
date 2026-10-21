@@ -31,28 +31,28 @@ async function memory() {
 	}
 }
 
-async function temperature(){
-    try {
-        const raw = await readFile('/sys/class/thermal/thermal_zone0/temp', 'utf8');
-        return Number(raw) / 1000;
-    } catch {
-        return null;
-    }
+async function temperature() {
+	try {
+		const raw = await readFile('/sys/class/thermal/thermal_zone0/temp', 'utf8');
+		return Number(raw) / 1000;
+	} catch {
+		return null;
+	}
 }
 
-async function storage(path = process.env.DISK_PATH ?? '/'){
-    const s = await statfs(path);
-    const total = s.blocks * s.bsize;
-    const free = s.bavail * s.bsize;
-    return { total, free, used: total - free };
+async function storage(path = process.env.DISK_PATH ?? '/') {
+	const s = await statfs(path);
+	const total = s.blocks * s.bsize;
+	const free = s.bavail * s.bsize;
+	return { total, free, used: total - free };
 }
 
 export async function GET() {
-    const [cpu, mem, temp, disk] = await Promise.all([
-        cpuPercent(),
-        memory(),
-        temperature(),
-        storage()
-    ]);
-    return json({ cpu, mem, temp, disk, uptime: os.uptime() });
+	const [cpu, mem, temp, disk] = await Promise.all([
+		cpuPercent(),
+		memory(),
+		temperature(),
+		storage()
+	]);
+	return json({ hostname: os.hostname(), cpu, mem, temp, disk, uptime: os.uptime() });
 }
