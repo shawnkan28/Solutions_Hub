@@ -20,13 +20,16 @@
 		temp: number | null;
 		disk: { total: number; free: number; used: number };
 		uptime: number;
+		perc: { mem: number; temp: number; disk: number };
 	};
 	let stats = $state<Stats | null>(null);
 
 	$effect(() => {
 		const load = async () => {
 			const res = await fetch('/api/stats');
-			if (res.ok) stats = await res.json();
+			if (res.ok) {
+				stats = await res.json();
+			}
 		};
 		load();
 		const id = setInterval(load, 5000);
@@ -46,31 +49,48 @@
 		<div class="line"></div>
 		<div class="stats">
 			{#if stats}
-				<div style="align-items: center;">
-					<div class="dot green"></div>
+				<div style="display: flex; align-items: center; gap: 10px;">
+					<span class="dot green" style="margin-bottom: 1px;"></span>
 					<div class="value">{stats.hostname}</div>
 				</div>
 				<div>
-					<label for="">CPU</label>
-					<div class="value">{stats?.cpu.toFixed(0)}%</div>
-					<div class="pbar"></div>
-				</div>
-				<div>
-					<label for="">RAM</label>
-					<div class="value">
-						{gb(stats?.mem.used)} <span class="sub">/ {gb(stats?.mem.total)} GB</span>
+					<div>
+						<label for="">CPU</label>
+						<div class="value">{stats?.cpu.toFixed(0)}%</div>
 					</div>
-					<div class="pbar"></div>
+					<div class="pbar">
+						<span class={stats.cpu > 90 ? "progress high" : stats.cpu > 70 ? " progress med" : "progress low"} style:width="{stats?.cpu.toFixed(0)}%"></span>
+					</div>
 				</div>
 				<div>
-					<label for="">TEMP</label>
-					<div class="value">{stats.temp?.toFixed(1) ?? '-'}°C</div>
-					<div class="pbar"></div>
+					<div>
+						<label for="">RAM</label>
+						<div class="value">
+							{gb(stats?.mem.used)} <span class="sub">/ {gb(stats?.mem.total)} GB</span>
+						</div>
+					</div>
+					<div class="pbar">
+						<span class={stats.perc.mem > 80 ? "progress high" : stats.perc.mem > 60 ? "progress med" : "progress low"} style:width="{stats.perc.mem}%"
+						></span>
+					</div>
 				</div>
 				<div>
-					<label for="">DISK</label>
-					<div class="value">{gb(stats.disk.free)} <span class="sub">GB free</span></div>
-					<div class="pbar"></div>
+					<div>
+						<label for="">TEMP</label>
+						<div class="value">{stats.temp?.toFixed(1) ?? '-'}°C</div>
+					</div>
+					<div class="pbar">
+						<span class={stats.perc.temp > 80 ? "progress high" : stats.perc.temp > 60 ? "progress med" : "progress low" } style:width="{stats.perc.temp}%"></span>
+					</div>
+				</div>
+				<div>
+					<div>
+						<label for="">DISK</label>
+						<div class="value">{gb(stats.disk.free)} <span class="sub">GB free</span></div>
+					</div>
+					<div class="pbar">
+						<span class={stats.perc.disk > 50 ? "progress low" : stats.perc.disk > 25 ? "progress med" : "progress high"} style:width="{stats.perc.disk}%"></span>
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -95,9 +115,8 @@
 		<div class="card-container">
 			<div class="card">
 				<div><span class="dot green"></span>ONLINE</div>
-				<span class="accent">{online}</span><span style="color: var(--text-faint);"
-					>/{totalOnline}</span
-				>
+				<span class="accent">{online}</span>
+				<span style="color: var(--text-faint);">/{totalOnline}</span>
 			</div>
 			<div class="card">
 				<div><span class="dot red"></span>OFFLINE</div>
@@ -252,11 +271,14 @@
 	/* STATS FOR MACHINE */
 	/* ############################################################################# */
 	.stats {
-		align-items: center;
+		align-items: flex-end;
 		display: flex;
 		gap: 20px;
 	}
 	.stats > div {
+		flex: 1;
+	}
+	.stats > div > div {
 		flex: 1;
 		display: flex;
 		gap: 5px;
@@ -276,5 +298,27 @@
 	.stats .sub {
 		margin-left: 2px;
 		color: var(--text-faint);
+	}
+	.pbar {
+		margin-top: 5px;
+		height: 5px;
+		border-radius: 999px;
+		background: var(--border-color);
+		overflow: hidden;
+	}
+	.progress {
+		height: 100%;
+		background: var(--border-accent);
+		border-radius: 999px;
+		transition: width .3s ease-in-out;
+	}
+	.progress.high {
+		background-color: var(--error);
+	}
+	.progress.low {
+		background-color: var(--success);
+	}
+	.progress.med {
+		background-color: var(--warning);
 	}
 </style>

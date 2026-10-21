@@ -54,5 +54,10 @@ export async function GET() {
 		temperature(),
 		storage()
 	]);
-	return json({ hostname: os.hostname(), cpu, mem, temp, disk, uptime: os.uptime() });
+	const perc = {
+		disk: ((disk.free / disk.total) * 100).toFixed(0),
+		temp: (((temp ?? 0) / 90) * 100).toFixed(0),
+		mem: ((mem.used / mem.total) * 100).toFixed(0)
+	};
+	return json({ hostname: os.hostname(), cpu, mem, temp, disk, uptime: os.uptime(), perc });
 }
